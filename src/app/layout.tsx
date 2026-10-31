@@ -21,6 +21,11 @@ export const metadata: Metadata = {
     "PathMentors connects students with lived-experience mentors through small, supportive group circles focused on wellbeing and career growth.",
 };
 
+// This app is fully client-rendered (auth-aware navigation and client-side
+// data fetching). Opt out of Cache Components' static-shell requirement so
+// client hooks like usePathname/useParams don't fail the production build.
+export const instant = false;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
