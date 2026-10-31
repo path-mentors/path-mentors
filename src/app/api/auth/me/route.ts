@@ -17,7 +17,7 @@ export async function GET() {
   }
 
   // Try fetching from the public 'users' table using maybeSingle()
-  let { data: profile, error } = await supabase
+  let { data: profile } = await supabase
     .from('users')
     .select('*')
     .eq('id', user.id)

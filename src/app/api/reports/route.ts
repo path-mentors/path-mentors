@@ -16,17 +16,18 @@ export async function POST(request: Request) {
     const report = await createSafetyReport(body)
 
     return NextResponse.json(
-      { success: true, message: 'Report submitted successfully.', report }, 
+      { success: true, message: 'Report submitted successfully.', report },
       { status: 201 }
     )
-  } catch (err: any) {
-    if (err.message === 'UNAUTHORIZED') {
+  } catch (err) {
+    const message = err instanceof Error ? err.message : ""
+    if (message === 'UNAUTHORIZED') {
       return NextResponse.json(
-        { error: 'Unauthorized: You must be logged in to submit a safety report.' }, 
+        { error: 'Unauthorized: You must be logged in to submit a safety report.' },
         { status: 401 }
       )
     }
 
-    return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 400 })
+    return NextResponse.json({ error: message || 'Internal Server Error' }, { status: 400 })
   }
 }

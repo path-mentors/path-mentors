@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/Badge";
 import { Spinner } from "@/components/ui/Spinner";
 import { api } from "@/lib/api";
 import { STUDENT_STATUS_OPTIONS, CHALLENGE_OPTIONS } from "@/lib/constants";
-import type { StudentStatus, ChallengeType } from "@/lib/types";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -30,6 +29,8 @@ export default function ProfilePage() {
       router.push("/login?next=/profile");
       return;
     }
+    // Initialise form fields from the auth profile once it has loaded.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDisplayName(user.display_name ?? "");
     setCurrentStatus(user.current_status ?? "");
     setMainChallenge(user.main_challenge ?? "");

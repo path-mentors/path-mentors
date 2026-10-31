@@ -31,7 +31,7 @@ export async function POST(
     }
 
     return NextResponse.json(data, { status: 200 })
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
@@ -67,7 +67,7 @@ export async function DELETE(
     }
 
     return NextResponse.json({ success: true, message: 'Registration cancelled successfully.' }, { status: 200 })
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

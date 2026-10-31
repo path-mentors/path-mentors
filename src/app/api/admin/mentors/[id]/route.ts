@@ -53,7 +53,8 @@ export async function PATCH(
     }
 
     return NextResponse.json({ mentor: updatedMentor }, { status: 200 });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 500 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "";
+    return NextResponse.json({ error: message || 'Internal Server Error' }, { status: 500 });
   }
 }

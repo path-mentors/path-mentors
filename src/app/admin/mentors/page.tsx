@@ -22,17 +22,6 @@ export default function AdminMentorsPage() {
   const [error, setError] = useState<string | null>(null);
   const [actionId, setActionId] = useState<string | null>(null);
 
-  async function load() {
-    try {
-      const { mentors } = await api.getPendingMentors("pending");
-      setMentors(mentors ?? []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not load applications.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
@@ -43,8 +32,21 @@ export default function AdminMentorsPage() {
       router.push("/");
       return;
     }
-    load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    let active = true;
+    (async () => {
+      try {
+        const { mentors } = await api.getPendingMentors("pending");
+        if (active) setMentors(mentors ?? []);
+      } catch (err) {
+        if (active)
+          setError(err instanceof Error ? err.message : "Could not load applications.");
+      } finally {
+        if (active) setLoading(false);
+      }
+    })();
+    return () => {
+      active = false;
+    };
   }, [user, authLoading, router]);
 
   async function handleReview(id: string, status: "approved" | "rejected") {

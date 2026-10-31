@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useAuth } from "@/components/AuthProvider";
 import { Card, CardBody } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Label, Textarea } from "@/components/ui/Input";
@@ -15,7 +14,6 @@ export default function FeedbackForm() {
   const searchParams = useSearchParams();
   const regId = searchParams.get("reg");
   const router = useRouter();
-  const { user, loading: authLoading } = useAuth();
 
   const [feelingBefore, setFeelingBefore] = useState<number | null>(null);
   const [feelingAfter, setFeelingAfter] = useState<number | null>(null);

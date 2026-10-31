@@ -32,17 +32,6 @@ export default function AdminReportsPage() {
   const [error, setError] = useState<string | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
-  async function load() {
-    try {
-      const { reports } = await api.getAdminReports();
-      setReports(reports ?? []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not load reports.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
     if (authLoading) return;
     if (!user) {
@@ -53,8 +42,21 @@ export default function AdminReportsPage() {
       router.push("/");
       return;
     }
-    load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    let active = true;
+    (async () => {
+      try {
+        const { reports } = await api.getAdminReports();
+        if (active) setReports(reports ?? []);
+      } catch (err) {
+        if (active)
+          setError(err instanceof Error ? err.message : "Could not load reports.");
+      } finally {
+        if (active) setLoading(false);
+      }
+    })();
+    return () => {
+      active = false;
+    };
   }, [user, authLoading, router]);
 
   async function handleStatusChange(report: Report, status: ReportStatus) {

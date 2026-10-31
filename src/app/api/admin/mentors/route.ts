@@ -49,11 +49,11 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json({ mentors }, { status: 200 });
-  } catch (err: any) {
-    const message =
-      err?.message === "Supabase service-role environment variables are missing."
-        ? "Server is missing the service-role key required for admin access."
-        : "Internal Server Error";
+  } catch (err) {
+    const isMissingKey = err instanceof Error && err.message === "Supabase service-role environment variables are missing.";
+    const message = isMissingKey
+      ? "Server is missing the service-role key required for admin access."
+      : "Internal Server Error";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
