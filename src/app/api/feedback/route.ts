@@ -16,14 +16,15 @@ export async function POST(request: Request) {
     const feedback = await submitStudentFeedback(body)
 
     return NextResponse.json({ success: true, feedback }, { status: 201 })
-  } catch (err: any) {
-    if (err.message === 'UNAUTHORIZED') {
+  } catch (err) {
+    const message = err instanceof Error ? err.message : ""
+    if (message === 'UNAUTHORIZED') {
       return NextResponse.json(
-        { error: 'Unauthorized: You must be logged in to submit feedback.' }, 
+        { error: 'Unauthorized: You must be logged in to submit feedback.' },
         { status: 401 }
       )
     }
 
-    return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 400 })
+    return NextResponse.json({ error: message || 'Internal Server Error' }, { status: 400 })
   }
 }

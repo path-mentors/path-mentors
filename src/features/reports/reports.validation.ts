@@ -6,13 +6,13 @@ export interface CreateReportDTO {
   severity?: 'low' | 'medium' | 'high' | 'crisis'
 }
 
-export function validateReport(data: any): { isValid: boolean; error?: string } {
+export function validateReport(data: Record<string, unknown>): { isValid: boolean; error?: string } {
   const validReasons = [
-    'inappropriate_content', 'harassment', 'unsafe_advice', 
+    'inappropriate_content', 'harassment', 'unsafe_advice',
     'impersonation', 'privacy_concern', 'crisis_concern', 'other'
   ]
 
-  if (!data.reason || !validReasons.includes(data.reason)) {
+  if (!data.reason || !validReasons.includes(data.reason as string)) {
     return { isValid: false, error: 'A valid report reason is required.' }
   }
 

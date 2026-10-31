@@ -8,7 +8,7 @@ export interface CreateFeedbackDTO {
   comment?: string
 }
 
-export function validateFeedback(data: any): { isValid: boolean; error?: string } {
+export function validateFeedback(data: Record<string, unknown>): { isValid: boolean; error?: string } {
   if (!data.registration_id) {
     return { isValid: false, error: 'Registration ID is required.' }
   }
